@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anusree Saha | Analytics Portfolio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1a;
+    --surface: #111827;
+    --surface-2: #1a2237;
+    --border: #2a3454;
+    --text: #e2e8f0;
+    --text-muted: #8896b3;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.15);
+    --green: #10b981;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 80px 40px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 32px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .tag.highlight {
+    background: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ---- NAV TABS ---- */
+  .project-nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ---- PROJECT SECTIONS ---- */
+  .project-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 40px;
+    display: none;
+  }
+  .project-section.active { display: block; }
+
+  .project-header {
+    margin-bottom: 40px;
+  }
+  .project-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .project-header .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ---- CARDS ---- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card-full {
+    grid-column: 1 / -1;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* ---- KPI CARDS ---- */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .kpi-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .kpi-change {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .kpi-change.up { color: var(--green); }
+  .kpi-change.down { color: var(--red); }
+
+  /* ---- SCHEMA DIAGRAM ---- */
+  .schema-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    padding: 32px;
+    flex-wrap: wrap;
+  }
+  .schema-table {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    min-width: 180px;
+    overflow: hidden;
+  }
+  .schema-table.fact {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+  .schema-table-header {
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .schema-table.fact .schema-table-header {
+    background: rgba(59,130,246,0.15);
+    color: var(--accent);
+  }
+  .schema-table.dim .schema-table-header {
+    background: rgba(139,92,246,0.15);
+    color: var(--purple);
+  }
+  .schema-field {
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+  .schema-field .fk { color: var(--amber); font-size: 9px; }
+  .schema-field .pk { color: var(--green); font-size: 9px; }
+
+  /* ---- CODE BLOCK ---- */
+  .code-block {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(59,130,246,0.1);
+    color: var(--accent);
+  }
+  .code-body {
+    padding: 16px;
+    overflow-x: auto;
+  }
+  .code-body pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  .code-body .kw { color: var(--purple); }
+  .code-body .fn { color: var(--accent); }
+  .code-body .st { color: var(--green); }
+  .code-body .cm { color: #4a5568; }
+  .code-body .num { color: var(--amber); }
+
+  /* ---- PIPELINE ---- */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+  .pipeline-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .pipeline-step .step-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .pipeline-step .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .pipeline-step .step-detail {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .pipeline-arrow {
+    font-size: 20px;
+    color: var(--accent);
+    padding: 0 8px;
+  }
+
+  /* ---- FEATURE IMPORTANCE ---- */
+  .feature-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .feature-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 160px;
+    text-align: right;
+  }
+  .feature-track {
+    flex: 1;
+    height: 22px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .feature-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+  .feature-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    min-width: 40px;
+  }
+
+  /* ---- DECISION RULES ---- */
+  .rule-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .rule-card .rule-if {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .rule-card .rule-then {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  /* ---- CHART CONTAINER ---- */
+  .chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+  }
+
+  /* ---- TABLE ---- */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(42,52,84,0.5);
+    color: var(--text);
+  }
+  .data-table tr:hover td { background: rgba(59,130,246,0.05); }
+
+  .status-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .status-badge.on-track { background: rgba(16,185,129,0.15); color: var(--green); }
+  .status-badge.at-risk { background: rgba(245,158,11,0.15); color: var(--amber); }
+  .status-badge.over { background: rgba(239,68,68,0.15); color: var(--red); }
+
+  /* ---- INSIGHTS ---- */
+  .insight-box {
+    background: var(--accent-glow);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .insight-box .insight-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .insight-box p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .footer-links a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 48px 20px 40px; }
+    .hero h1 { font-size: 28px; }
+    .project-nav { padding: 0 20px; overflow-x: auto; }
+    .project-section { padding: 32px 20px; }
+    .schema-container { gap: 20px; }
+    .pipeline { flex-direction: column; }
+    .pipeline-arrow { transform: rotate(90deg); }
+    .feature-name { min-width: 100px; font-size: 10px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-label">Analytics Portfolio</div>
+  <h1>Anusree <span>Saha</span></h1>
+  <p>Data analyst and analytics engineer specializing in Power BI development, star schema data modeling, Python ETL automation, and predictive analytics. These projects use mock data to demonstrate analytical methodology and technical capabilities.</p>
+  <div class="hero-tags">
+    <span class="tag highlight">Power BI</span>
+    <span class="tag highlight">DAX</span>
+    <span class="tag highlight">Star Schema</span>
+    <span class="tag">Python</span>
+    <span class="tag">PySpark</span>
+    <span class="tag">SQL</span>
+    <span class="tag">ETL</span>
+    <span class="tag">XGBoost</span>
+    <span class="tag">Streamlit</span>
+  </div>
+</section>
+
+<!-- ============ NAV ============ -->
+<nav class="project-nav">
+  <button class="nav-tab active" onclick="showProject('p1')">Financial Dashboard</button>
+  <button class="nav-tab" onclick="showProject('p2')">ETL Pipeline</button>
+  <button class="nav-tab" onclick="showProject('p3')">ML Prediction Engine</button>
+</nav>
+
+<!-- ============ PROJECT 1: FINANCIAL DASHBOARD ============ -->
+<section id="p1" class="project-section active">
+  <div class="project-header">
+    <h2>Financial Operations Dashboard</h2>
+    <p class="subtitle">Star schema data model powering interactive budget vs. actuals reporting across 4 departments</p>
+    <div class="project-meta">
+      <div class="meta-item">
+        <span class="meta-label">Tools</span>
+        <span class="meta-value">Power BI, DAX, Power Query</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Data Model</span>
+        <span class="meta-value">Star Schema (1 Fact + 3 Dimensions)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Records</span>
+        <span class="meta-value">12,000+ transactions</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Stakeholders</span>
+        <span class="meta-value">Finance, Ops, Executive Leadership</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Star Schema Diagram -->
+  <div class="card card-full" style="margin-bottom:20px;">
+    <h3>Data Model: Star Schema</h3>
+    <p class="card-desc">Fact table connected to 3 dimension tables via foreign key relationships. DAX measures calculate derived metrics across relationships.</p>
+    <div class="schema-container">
+      <div class="schema-table dim">
+        <div class="schema-table-header">Dim_Department</div>
+        <div class="schema-field">dept_id <span class="pk">PK</span></div>
+        <div class="schema-field">dept_name</div>
+        <div class="schema-field">cost_center</div>
+        <div class="schema-field">manager</div>
+      </div>
+      <div class="schema-table fact">
+        <div class="schema-table-header">Fact_Transactions</div>
+        <div class="schema-field">txn_id <span class="pk">PK</span></div>
+        <div class="schema-field">date_id <span class="fk">FK</span></div>
+        <div class="schema-field">dept_id <span class="fk">FK</span></div>
+        <div class="schema-field">category_id <span class="fk">FK</span></div>
+        <div class="schema-field">budget_amount</div>
+        <div class="schema-field">actual_amount</div>
+        <div class="schema-field">variance</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="schema-table dim">
+          <div class="schema-table-header">Dim_Date</div>
+          <div class="schema-field">date_id <span class="pk">PK</span></div>
+          <div class="schema-field">month</div>
+          <div class="schema-field">quarter</div>
+          <div class="schema-field">fiscal_year</div>
+        </div>
+        <div class="schema-table dim">
+          <div class="schema-table-header">Dim_Category</div>
+          <div class="schema-field">category_id <span class="pk">PK</span></div>
+          <div class="schema-field">category_name</div>
+          <div class="schema-field">category_type</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Total Budget</div>
+      <div class="kpi-value">$4.2M</div>
+      <div class="kpi-change up">Across 4 departments</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Actual Spend</div>
+      <div class="kpi-value">$3.87M</div>
+      <div class="kpi-change up">7.9% under budget</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Utilization Rate</div>
+      <div class="kpi-value">92.1%</div>
+      <div class="kpi-change up">+3.2% vs prior year</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">At-Risk Programs</div>
+      <div class="kpi-value">1 of 4</div>
+      <div class="kpi-change down">Operations over by 4.2%</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="card-grid">
+    <div class="card">
+      <h3>Budget vs. Actuals by Department</h3>
+      <p class="card-desc">DAX Measure: Variance% = DIVIDE([Actual] - [Budget], [Budget])</p>
+      <div class="chart-container">
+        <canvas id="budgetChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Monthly Spend Trend</h3>
+      <p class="card-desc">Rolling 12-month view with budget ceiling overlay</p>
+      <div class="chart-container">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Department Table -->
+  <div class="card card-full">
+    <h3>Department Performance Summary</h3>
+    <p class="card-desc">Sortable view with status indicators derived from DAX conditional logic</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Budget</th>
+          <th>Actual</th>
+          <th>Variance</th>
+          <th>Utilization</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Engineering</td>
+          <td>$1,250,000</td>
+          <td>$1,143,750</td>
+          <td style="color:var(--green)">-8.5%</td>
+          <td>91.5%</td>
+          <td><span class="status-badge on-track">On Track</span></td>
+        </tr>
+        <tr>
+          <td>Operations</td>
+          <td>$980,000</td>
+          <td>$1,021,160</td>
+          <td style="color:var(--red)">+4.2%</td>
+          <td>104.2%</td>
+          <td><span class="status-badge over">Over Budget</span></td>
+        </tr>
+        <tr>
+          <td>Marketing</td>
+          <td>$870,000</td>
+          <td>$800,400</td>
+          <td style="color:var(--green)">-8.0%</td>
+          <td>92.0%</td>
+          <td><span class="status-badge on-track">On Track</span></td>
+        </tr>
+        <tr>
+          <td>Finance</td>
+          <td>$1,100,000</td>
+          <td>$1,001,000</td>
+          <td style="color:var(--green)">-9.0%</td>
+          <td>91.0%</td>
+          <td><span class="status-badge on-track">On Track</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="insight-box">
+      <div class="insight-label">Key Insight</div>
+      <p>Operations department exceeded budget by 4.2% driven by unplanned vendor costs in Q3. Recommended action: implement monthly vendor spend cap alerts and require approval workflow for purchases exceeding $25K. This rule-based threshold was derived from variance pattern analysis across the trailing 6-month window.</p>
+    </div>
+  </div>
+
+  <!-- DAX Code Sample -->
+  <div class="card card-full">
+    <h3>Sample DAX Measures</h3>
+    <p class="card-desc">Reusable calculated measures applied across the star schema model</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">measures.dax</span>
+        <span class="code-lang">DAX</span>
+      </div>
+      <div class="code-body"><pre><span class="cm">// Budget Variance % by Department</span>
+Budget Variance % =
+<span class="kw">VAR</span> _Budget = <span class="fn">SUM</span>(Fact_Transactions[budget_amount])
+<span class="kw">VAR</span> _Actual = <span class="fn">SUM</span>(Fact_Transactions[actual_amount])
+<span class="kw">RETURN</span>
+    <span class="fn">DIVIDE</span>(_Actual - _Budget, _Budget, <span class="num">0</span>)
+
+<span class="cm">// Utilization Rate (rolling 3-month)</span>
+Utilization Rate 3M =
+<span class="fn">CALCULATE</span>(
+    <span class="fn">DIVIDE</span>(
+        <span class="fn">SUM</span>(Fact_Transactions[actual_amount]),
+        <span class="fn">SUM</span>(Fact_Transactions[budget_amount])
+    ),
+    <span class="fn">DATESINPERIOD</span>(
+        Dim_Date[date], <span class="fn">MAX</span>(Dim_Date[date]), <span class="num">-3</span>, <span class="kw">MONTH</span>
+    )
+)
+
+<span class="cm">// Conditional Status Flag</span>
+Budget Status =
+<span class="kw">SWITCH</span>(
+    <span class="kw">TRUE</span>(),
+    [Budget Variance %] > <span class="num">0.03</span>, <span class="st">"Over Budget"</span>,
+    [Budget Variance %] > <span class="num">-0.02</span>, <span class="st">"At Risk"</span>,
+    <span class="st">"On Track"</span>
+)</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECT 2: ETL PIPELINE ============ -->
+<section id="p2" class="project-section">
+  <div class="project-header">
+    <h2>ETL Pipeline Automation</h2>
+    <p class="subtitle">Python + PySpark pipeline transforming raw multi-source data into analytics-ready datasets</p>
+    <div class="project-meta">
+      <div class="meta-item">
+        <span class="meta-label">Tools</span>
+        <span class="meta-value">Python, PySpark, Polars, SQL</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sources</span>
+        <span class="meta-value">4 (CSV, Excel, API, Database)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Processing</span>
+        <span class="meta-value">2,200+ records per run</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Time Saved</span>
+        <span class="meta-value">95% reduction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pipeline Diagram -->
+  <div class="card card-full" style="margin-bottom:20px;">
+    <h3>Pipeline Architecture</h3>
+    <p class="card-desc">End-to-end data flow from raw sources to stakeholder-ready outputs</p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-icon">📥</div>
+        <div class="step-title">Ingest</div>
+        <div class="step-detail">CSV, Excel, API, SQL</div>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Validate</div>
+        <div class="step-detail">Schema checks, nulls, types</div>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="step-icon">⚙️</div>
+        <div class="step-title">Transform</div>
+        <div class="step-detail">PySpark + Polars</div>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="step-icon">📊</div>
+        <div class="step-title">Model</div>
+        <div class="step-detail">Star schema output</div>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="step-icon">✅</div>
+        <div class="step-title">Deliver</div>
+        <div class="step-detail">Dashboard + reports</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Before / After -->
+  <div class="card-grid">
+    <div class="card">
+      <h3>Before: Raw Data Sample</h3>
+      <p class="card-desc">Inconsistent formats, missing values, duplicate records</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">raw_input.csv</span>
+          <span class="code-lang">CSV</span>
+        </div>
+        <div class="code-body"><pre><span class="cm">date,dept,amount,category,status</span>
+2024-01-15,<span class="st">Engineering</span>,<span class="num">12500</span>,Labor,active
+01/20/2024,<span class="st">engineering</span>,<span class="num">8300</span>,,Active
+2024-01-22,<span class="st">Eng.</span>,<span class="num">NULL</span>,Materials,ACTIVE
+2024-01-15,<span class="st">Engineering</span>,<span class="num">12500</span>,Labor,active
+<span class="st">Jan 25 2024</span>,<span class="st">operations</span>,<span class="num">-500</span>,Travel,
+2024-02-01,<span class="st">Ops</span>,<span class="num">9200</span>,Labor,active</pre></div>
+      </div>
+      <div style="margin-top:8px;">
+        <span class="status-badge over" style="margin-right:6px;">3 date formats</span>
+        <span class="status-badge over" style="margin-right:6px;">4 dept spellings</span>
+        <span class="status-badge over" style="margin-right:6px;">NULL values</span>
+        <span class="status-badge over">1 duplicate</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>After: Cleaned Output</h3>
+      <p class="card-desc">Standardized, validated, deduplicated, ready for modeling</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">clean_output.parquet</span>
+          <span class="code-lang">PARQUET</span>
+        </div>
+        <div class="code-body"><pre><span class="cm">date       | dept_id | amount  | category  | status</span>
+<span class="num">2024-01-15</span> | <span class="st">ENG</span>     | <span class="num">12,500</span>  | Labor     | Active
+<span class="num">2024-01-20</span> | <span class="st">ENG</span>     | <span class="num">8,300</span>   | Uncateg.  | Active
+<span class="num">2024-01-22</span> | <span class="st">ENG</span>     | <span class="num">0</span>       | Materials | Active
+<span class="num">2024-01-25</span> | <span class="st">OPS</span>     | <span class="num">0</span>       | Travel    | Active
+<span class="num">2024-02-01</span> | <span class="st">OPS</span>     | <span class="num">9,200</span>   | Labor     | Active</pre></div>
+      </div>
+      <div style="margin-top:8px;">
+        <span class="status-badge on-track" style="margin-right:6px;">ISO dates</span>
+        <span class="status-badge on-track" style="margin-right:6px;">Mapped IDs</span>
+        <span class="status-badge on-track" style="margin-right:6px;">Nulls handled</span>
+        <span class="status-badge on-track">Deduped</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PySpark Code -->
+  <div class="card card-full">
+    <h3>PySpark Transformation Logic</h3>
+    <p class="card-desc">Core transformation functions with validation and standardization</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">transform.py</span>
+        <span class="code-lang">PySpark</span>
+      </div>
+      <div class="code-body"><pre><span class="kw">from</span> pyspark.sql <span class="kw">import</span> SparkSession
+<span class="kw">from</span> pyspark.sql <span class="kw">import</span> functions <span class="kw">as</span> F
+<span class="kw">from</span> pyspark.sql.window <span class="kw">import</span> Window
+
+spark = SparkSession.builder.appName(<span class="st">"FinancialETL"</span>).getOrCreate()
+
+<span class="cm"># Standardize department names via lookup mapping</span>
+dept_map = {<span class="st">"engineering"</span>: <span class="st">"ENG"</span>, <span class="st">"eng."</span>: <span class="st">"ENG"</span>,
+            <span class="st">"operations"</span>: <span class="st">"OPS"</span>, <span class="st">"ops"</span>: <span class="st">"OPS"</span>}
+
+<span class="kw">def</span> <span class="fn">clean_transactions</span>(df):
+    <span class="cm">"""Standardize, validate, and deduplicate transaction data."""</span>
+
+    <span class="cm"># 1. Parse multiple date formats</span>
+    df = df.withColumn(<span class="st">"date"</span>,
+        F.coalesce(
+            F.to_date(F.col(<span class="st">"date"</span>), <span class="st">"yyyy-MM-dd"</span>),
+            F.to_date(F.col(<span class="st">"date"</span>), <span class="st">"MM/dd/yyyy"</span>),
+            F.to_date(F.col(<span class="st">"date"</span>), <span class="st">"MMM dd yyyy"</span>)
+        ))
+
+    <span class="cm"># 2. Map department names to standard IDs</span>
+    mapping_expr = F.create_map(
+        [F.lit(x) <span class="kw">for</span> pair <span class="kw">in</span> dept_map.items() <span class="kw">for</span> x <span class="kw">in</span> pair])
+    df = df.withColumn(<span class="st">"dept_id"</span>,
+        mapping_expr[F.lower(F.trim(F.col(<span class="st">"dept"</span>)))])
+
+    <span class="cm"># 3. Handle nulls and negative values</span>
+    df = df.withColumn(<span class="st">"amount"</span>,
+        F.when(F.col(<span class="st">"amount"</span>).isNull() | (F.col(<span class="st">"amount"</span>) < <span class="num">0</span>), <span class="num">0</span>)
+         .otherwise(F.col(<span class="st">"amount"</span>)))
+
+    <span class="cm"># 4. Deduplicate on composite key</span>
+    w = Window.partitionBy(<span class="st">"date"</span>, <span class="st">"dept_id"</span>, <span class="st">"amount"</span>) \
+              .orderBy(F.col(<span class="st">"date"</span>).desc())
+    df = df.withColumn(<span class="st">"rn"</span>, F.row_number().over(w)) \
+           .filter(F.col(<span class="st">"rn"</span>) == <span class="num">1</span>).drop(<span class="st">"rn"</span>)
+
+    <span class="kw">return</span> df</pre></div>
+    </div>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Processing Time</div>
+      <div class="kpi-value">3 min</div>
+      <div class="kpi-change up">Down from 30 min manual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Records Per Run</div>
+      <div class="kpi-value">2,200+</div>
+      <div class="kpi-change up">Fully automated</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Error Rate</div>
+      <div class="kpi-value">0.02%</div>
+      <div class="kpi-change up">Down from 3.1% manual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Hours Saved/Year</div>
+      <div class="kpi-value">400+</div>
+      <div class="kpi-change up">Across all programs</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECT 3: ML PREDICTION ============ -->
+<section id="p3" class="project-section">
+  <div class="project-header">
+    <h2>Predictive Analytics Engine</h2>
+    <p class="subtitle">XGBoost model with interpretable decision rules, deployed as a self-service Streamlit application</p>
+    <div class="project-meta">
+      <div class="meta-item">
+        <span class="meta-label">Tools</span>
+        <span class="meta-value">Python, XGBoost, scikit-learn, Streamlit</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Model</span>
+        <span class="meta-value">XGBoost Classifier</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Accuracy</span>
+        <span class="meta-value">91.3%</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">End Users</span>
+        <span class="meta-value">Non-technical operations teams</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Model Performance -->
+  <div class="card-grid">
+    <div class="card">
+      <h3>Model Performance: Predicted vs. Actual</h3>
+      <p class="card-desc">Threshold classification across operational risk levels</p>
+      <div class="chart-container">
+        <canvas id="mlChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Feature Importance</h3>
+      <p class="card-desc">Top drivers identified by XGBoost, translated into stakeholder-readable decision rules</p>
+      <div id="featureImportance"></div>
+    </div>
+  </div>
+
+  <!-- Decision Rules -->
+  <div class="card card-full">
+    <h3>Extracted Decision Rules</h3>
+    <p class="card-desc">Model outputs translated into human-readable business logic for non-technical stakeholders</p>
+    <div class="rule-card">
+      <div class="rule-if">IF utilization_rate > 95% AND vendor_spend_growth > 12% (3-month trailing)</div>
+      <div class="rule-then">THEN flag = "High Risk" → Trigger budget review with department lead</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-if">IF days_since_last_review > 45 AND open_items > 8</div>
+      <div class="rule-then">THEN flag = "Needs Attention" → Auto-schedule governance checkpoint</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-if">IF variance_pct < -5% AND headcount_stable = TRUE</div>
+      <div class="rule-then">THEN flag = "On Track" → No action required, log for quarterly review</div>
+    </div>
+    <div class="insight-box">
+      <div class="insight-label">Why Interpretable ML Matters</div>
+      <p>Stakeholders don't trust black-box models. By extracting decision rules from XGBoost's tree structure and translating them into IF/THEN business logic, operations teams can validate the model against their domain expertise. This builds trust and drives adoption: the Streamlit app saw 85% weekly active usage within the first month of deployment.</p>
+    </div>
+  </div>
+
+  <!-- Streamlit App Mockup -->
+  <div class="card card-full">
+    <h3>Self-Service Prediction Interface (Streamlit)</h3>
+    <p class="card-desc">Non-technical users input current parameters and receive instant risk classification with explanation</p>
+    <div style="background:var(--surface-2);border-radius:8px;padding:24px;margin-top:12px;">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Utilization Rate</label>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:14px;min-width:120px;">97.2%</div>
+        </div>
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Vendor Spend Growth</label>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:14px;min-width:120px;">14.8%</div>
+        </div>
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Days Since Review</label>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:14px;min-width:120px;">52</div>
+        </div>
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Open Items</label>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:14px;min-width:120px;">11</div>
+        </div>
+      </div>
+      <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <span style="font-size:20px;">⚠️</span>
+          <span style="font-size:16px;font-weight:700;color:var(--red);">HIGH RISK</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-left:auto;">Confidence: 94.1%</span>
+        </div>
+        <p style="font-size:13px;color:var(--text);line-height:1.6;">Utilization exceeds 95% threshold (97.2%) with vendor spend growth above 12% (14.8%). Combined with 52 days since last review, this triggers the High Risk classification. Recommended action: schedule budget review with department lead within 5 business days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <span class="footer-text">All data in this portfolio is mock/synthetic. No confidential information is used.</span>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/anusree-saha/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/cheesecake2023" target="_blank">GitHub</a>
+    <a href="mailto:anusree.saha2023@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ---- Tab Navigation ----
+function showProject(id) {
+  document.querySelectorAll('.project-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+
+  // Render charts when tab becomes visible
+  if (id === 'p1') { renderBudgetChart(); renderTrendChart(); }
+  if (id === 'p3') { renderMLChart(); renderFeatures(); }
+}
+
+// ---- Chart Defaults ----
+Chart.defaults.color = '#8896b3';
+Chart.defaults.borderColor = 'rgba(42,52,84,0.5)';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+// ---- Project 1 Charts ----
+function renderBudgetChart() {
+  const ctx = document.getElementById('budgetChart');
+  if (ctx._chart) ctx._chart.destroy();
+  ctx._chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Engineering', 'Operations', 'Marketing', 'Finance'],
+      datasets: [
+        { label: 'Budget', data: [1250000, 980000, 870000, 1100000], backgroundColor: 'rgba(59,130,246,0.3)', borderColor: '#3b82f6', borderWidth: 1 },
+        { label: 'Actual', data: [1143750, 1021160, 800400, 1001000], backgroundColor: 'rgba(16,185,129,0.3)', borderColor: '#10b981', borderWidth: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 16 } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M' }, grid: { color: 'rgba(42,52,84,0.3)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderTrendChart() {
+  const ctx = document.getElementById('trendChart');
+  if (ctx._chart) ctx._chart.destroy();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const actual = [310000, 295000, 335000, 320000, 345000, 310000, 360000, 340000, 355000, 325000, 315000, 340000];
+  const budget = Array(12).fill(350000);
+  ctx._chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Actual Spend', data: actual, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 },
+        { label: 'Budget Ceiling', data: budget, borderColor: '#ef4444', borderDash: [6,4], pointRadius: 0 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 16 } } },
+      scales: {
+        y: { ticks: { callback: v => '$' + (v/1000) + 'K' }, grid: { color: 'rgba(42,52,84,0.3)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ---- Project 3 Charts ----
+function renderMLChart() {
+  const ctx = document.getElementById('mlChart');
+  if (ctx._chart) ctx._chart.destroy();
+  ctx._chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['True Positive', 'True Negative', 'False Positive', 'False Negative'],
+      datasets: [{
+        data: [284, 651, 38, 27],
+        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
+        borderColor: '#111827', borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16 } },
+        title: { display: true, text: 'Confusion Matrix (n=1,000 test samples)', color: '#8896b3', font: { size: 12 } }
+      }
+    }
+  });
+}
+
+function renderFeatures() {
+  const container = document.getElementById('featureImportance');
+  if (container.innerHTML) return;
+  const features = [
+    { name: 'utilization_rate', pct: 28, color: '#3b82f6' },
+    { name: 'vendor_spend_growth', pct: 22, color: '#8b5cf6' },
+    { name: 'days_since_review', pct: 18, color: '#10b981' },
+    { name: 'open_items_count', pct: 14, color: '#f59e0b' },
+    { name: 'headcount_delta', pct: 10, color: '#ef4444' },
+    { name: 'quarter', pct: 5, color: '#6b7280' },
+    { name: 'dept_size', pct: 3, color: '#6b7280' },
+  ];
+  features.forEach(f => {
+    container.innerHTML += `
+      <div class="feature-bar">
+        <span class="feature-name">${f.name}</span>
+        <div class="feature-track">
+          <div class="feature-fill" style="width:${f.pct * 3}%;background:${f.color}"></div>
+        </div>
+        <span class="feature-pct">${f.pct}%</span>
+      </div>`;
+  });
+}
+
+// Initial render
+renderBudgetChart();
+renderTrendChart();
+</script>
+</body>
+</html>
